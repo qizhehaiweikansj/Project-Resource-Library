@@ -8,13 +8,14 @@
 #define ROW1 (ROW + 2)
 #define COL1 (COL + 2)
 #define MINE_COUNT 100  // 雷数
-#define UNOPENED_CELL '#'  // 未翻开格子的
-#define MINE_CELL '*'    // 雷的
-#define EMPTY_CELL '0'   // 周围无雷
+#define UNOPENED_CELL '#'  // 玩家视图
+#define MINE_CELL '*'    // 有雷符号
+#define EMPTY_CELL '0'   // 无雷符号
 #define MAX_DEPTH 5      // 最大递归深度
 
 // 打印菜单
-void menu() {
+void menu() 
+{
     printf("**********  扫雷  ***********\n");
     printf("*****************************\n");
     printf("*******  按任意键进入*********\n");
@@ -132,7 +133,8 @@ int countMines(char board[ROW1][COL1], char displayBoard[ROW1][COL1], int row, i
                         if (board[i][j] == MINE_CELL) 
                         {
                             count++;
-                        } else 
+                        } 
+                        else 
                         {
                             // 如果周围格子是空白格且未被统计过
                             if (displayBoard[i][j] == UNOPENED_CELL) 

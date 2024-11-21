@@ -218,7 +218,8 @@ void inputAndSweep(char mineBoard[ROW1][COL1], char displayBoard[ROW1][COL1], in
 }
 
 // 游戏主流程
-void game() {
+void game() 
+{
     char mineBoard[ROW1][COL1];
     char displayBoard[ROW1][COL1];
     initBoard(mineBoard, ROW1, COL1, EMPTY_CELL);

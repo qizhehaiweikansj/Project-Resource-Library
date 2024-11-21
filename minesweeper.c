@@ -8,14 +8,13 @@
 #define ROW1 (ROW + 2)
 #define COL1 (COL + 2)
 #define MINE_COUNT 100  // 雷数
-#define UNOPENED_CELL '#'  // 玩家视图
-#define MINE_CELL '*'    // 有雷符号
-#define EMPTY_CELL '0'   // 无雷符号
-#define MAX_DEPTH 5      // 最大递归深度
+#define UNOPENED_CELL '#'  //未翻开格子的
+#define MINE_CELL '*'    // 雷的
+#define EMPTY_CELL '0'   // 周围无雷
+#define MAX_DEPTH 3      // 最大递归深度
 
 // 打印菜单
-void menu() 
-{
+void menu() {
     printf("**********  扫雷  ***********\n");
     printf("*****************************\n");
     printf("*******  按任意键进入*********\n");
@@ -132,6 +131,8 @@ int countMines(char board[ROW1][COL1], char displayBoard[ROW1][COL1], int row, i
                     {
                         if (board[i][j] == MINE_CELL) 
                         {
+                            printf("递归坐标：(%d,%d)\n",i,j);
+                            printf("雷数：%d\n",count);
                             count++;
                         } 
                         else 
@@ -139,15 +140,29 @@ int countMines(char board[ROW1][COL1], char displayBoard[ROW1][COL1], int row, i
                             // 如果周围格子是空白格且未被统计过
                             if (displayBoard[i][j] == UNOPENED_CELL) 
                             {
+                                printf("递归坐标：(%d,%d)\n",i,j);
+                                printf("递归深度：%d\n",depth);
                                 int sub_count = countMines(board, displayBoard, i, j, depth + 1, max_depth);
-                                count += sub_count;
+                                count =sub_count;
                             }
                         }
                     }
                 }
             }
         }
-        displayBoard[row][col] = (count == 0)? EMPTY_CELL : (count + '0');  // 如果周围没雷设置为空，否则设置为数字字符
+        if(count<10)
+        {
+            printf("递归坐标：(%d,%d)\n",row,col);
+            printf("雷数：%d\n",count);
+            displayBoard[row][col] = (count == 0)? EMPTY_CELL : (count + '0');  // 如果周围没雷设置为空，否则设置为数字字符
+        }
+        else
+        {
+            printf("递归坐标：(%d,%d)\n",row,col);
+            printf("雷数：%d\n",count);
+            displayBoard[row][col] = '0';  // 如果周围有10个以上的雷，设置为'X'
+        }
+        // displayBoard[row][col] = (count == 0)? EMPTY_CELL : (count + '0');
     }
     return count;
 }
@@ -171,7 +186,7 @@ void inputAndSweep(char mineBoard[ROW1][COL1], char displayBoard[ROW1][COL1], in
             } 
             else 
             {
-                int count = countMines(mineBoard, displayBoard, x, y, 0, MAX_DEPTH);
+                countMines(mineBoard, displayBoard, x, y, 0, MAX_DEPTH);
                 // 如果翻开的是空白格（周围无雷），自动翻开周围空白格（递归处理）
                 if (displayBoard[x][y] == EMPTY_CELL) 
                 {
@@ -244,10 +259,14 @@ int main()
             if (choice == 'j') 
             {
                 break;
-            } else {
+            } 
+            else 
+            {
                 game();
             }
         }
     } while (1);
     return 0;
 }
+
+

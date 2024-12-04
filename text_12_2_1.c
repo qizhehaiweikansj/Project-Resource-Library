@@ -462,24 +462,24 @@ void sort()
                     //第二个参数是数组的元素个数
                     //第三个参数是每个元素的大小
                     //第四个参数是比较函数的指针地址
-                    print();
+                    printf("排序完毕！\n");
                     break;
                 case 2:
                     qsort(arr,st,sizeof(struct stu),com_stu_age);
-                    print();
+                    printf("排序完毕！\n");
                     //输出函数
                     break;
                 case 3:
                     qsort(arr,st,sizeof(struct stu),com_stu_id);
-                    print();
+                    printf("排序完毕！\n");
                     break;
                 case 4:
                     qsort(arr,st,sizeof(struct stu),com_stu_phone);
-                    print();
+                    printf("排序完毕！\n");
                     break;
                 case 5:
                     qsort(arr,st,sizeof(struct stu),com_stu_faculties);
-                    print();
+                    printf("排序完毕！\n");
                     break;
                 default:
                     printf("输入非法！\n");
@@ -528,7 +528,8 @@ int main()
         else
         {
             printf("未读取到字符！\n");
-            Sleep(1000);//延时
+            Sleep(1000);
+            //延时
             printf("请重新输入\n");
             clean();
         }

@@ -22,6 +22,9 @@ struct stu
     //院系
 };
 
+HANDLE hConsole;
+// 颜色全局变量
+
 void meau();
 
 // 查找相关函数声明
@@ -31,19 +34,32 @@ void id();
 void phone();
 void find();
 
-int com_stu_name(const void* e1, const void* e2);
+int com_stu_name(const void* a, const void* b);
+//qsort函数要name
 
-int com_stu_age(const void* e1, const void* e2);
+int com_stu_age(const void* a, const void* b);
+//qsort函数要age
 
-int com_stu_id(const void* e1, const void* e2);
+int com_stu_id(const void* a, const void* b);
+//qsort函数要的身份证号
 
-int com_stu_phone(const void* e1, const void* e2);
+int com_stu_phone(const void* a, const void* b);
+//qsort函数要的电话号
 
-int com_stu_faculties(const void* e1, const void* e2);
+int com_stu_faculties(const void* a, const void* b);
+//qsort函数要的院系
 
 void clean();
 
 struct stu* Student_structure(const int* pr);
+
+void Yellow();
+
+void red();
+
+void cyan();
+
+void Light_gray();
 
 void stu(int *i);
 
@@ -61,8 +77,32 @@ void revise();
 
 void sort();
 
+void red()
+{
+    SetConsoleTextAttribute(hConsole, 0x04);
+    //红色字体
+}
+void Yellow()
+{
+    SetConsoleTextAttribute(hConsole, 0x0E);
+    //黄色字体
+}
+
+void cyan()
+{
+    SetConsoleTextAttribute(hConsole, 0x03);
+    //青色字体
+}
+
+void Light_gray()
+{
+    SetConsoleTextAttribute(hConsole, 0x07);
+    //浅灰字体
+}
+
 void meau()
 {
+    Yellow();
     printf("*******学生信息管理*******\n");
     printf("*********0:退出**********\n");
     printf("*********1:查找**********\n");
@@ -71,29 +111,33 @@ void meau()
     printf("*********4:打印**********\n");
     printf("*********5:排序**********\n");
 }
-int com_stu_name(const void* e1,const void* e2)
+int com_stu_name(const void* a,const void* b)
 //qsort函数要的函数指针
 {
-    return strcmp(((struct stu*)e1)->name,((struct stu*)e2)->name);
-}
-int com_stu_age(const void* e1,const void* e2)
-{
-    return ((struct stu*)e1)->age-((struct stu*)e2)->age;
-}
-
-int com_stu_id(const void* e1,const void* e2)
-{
-    return ((struct stu*)e1)->identity_card-((struct stu*)e2)->identity_card;
+    return strcmp(((struct stu*)a)->name,((struct stu*)b)->name);
+    //比较函数指针，比较函数指针，第一个参数是要比较的第一个元素的地址
+    //strcmp函数比较字符串相等返回0，反之返回差值
+    //
 }
 
-int com_stu_phone(const void* e1,const void* e2)
+int com_stu_age(const void* a,const void* b)
 {
-    return ((struct stu*)e1)->telephone_number-((struct stu*)e2)->telephone_number;
+    return ((struct stu*)a)->age-((struct stu*)b)->age;
 }
 
-int com_stu_faculties(const void* e1,const void* e2)
+int com_stu_id(const void* a,const void* b)
 {
-    return strcmp(((struct stu*)e1)->Faculties,((struct stu*)e2)->Faculties);
+    return ((struct stu*)a)->identity_card-((struct stu*)b)->identity_card;
+}
+
+int com_stu_phone(const void* a,const void* b)
+{
+    return ((struct stu*)a)->telephone_number-((struct stu*)b)->telephone_number;
+}
+
+int com_stu_faculties(const void* a,const void* b)
+{
+    return strcmp(((struct stu*)a)->Faculties,((struct stu*)b)->Faculties);
 }
 
 
@@ -111,22 +155,26 @@ struct stu*Student_structure(const int* pr)
 {
     if (pr == NULL) 
     {
+        red();
         printf("传入指针为空！\n");
         return NULL;
     }
     else if (*pr <= 0) 
     {
+        red();
         printf("传入的数组大小值不合理！\n");
         return NULL;
     }
     struct stu *arr = (struct stu *)malloc((*pr) * sizeof(struct stu));
     if (arr == NULL) 
     {
+        red();
         printf("内存分配失败！\n");
         return NULL;
     }
     return arr;
 }
+
 void stu(int *i)
 //输入函数
 {
@@ -146,6 +194,7 @@ void stu(int *i)
     {
         if(arr[*i].identity_card==arr[j].identity_card)
         {
+            red();
             printf("身份证和第%d人重复！请重新输入！\n",j+1);
             clean();
             break;
@@ -163,7 +212,8 @@ void stu(int *i)
 void pri(int*i)
 //打印函数
 {
-    printf("第%d个人的信息：\n",i+1);
+    cyan();
+    printf("第%d个人的信息：\n",(*i)+1);
     printf("姓名：%s ",arr[*i].name);
     printf("性别：%s ",arr[*i].gender);
     printf("年龄：%d ",arr[*i].age);
@@ -176,6 +226,8 @@ void pri(int*i)
 void print()
 //打印主函数
 {
+    cyan();
+    printf("打印信息：\n");
     if (st <= 0)
     {
         create();
@@ -272,12 +324,14 @@ void find()
                     phone();
                     break;
                 default:
+                    red();
                     printf("输入非法！\n");
                     break;
             }
         }
         else
         {
+            red();
             printf("输入错误！\n");
             clean();
             goto wa;
@@ -287,6 +341,7 @@ void find()
 void create()
 //创建函数
 {
+    red();
     printf("未输入信息！\n");
     printf("2秒后进入学生创建！\n");
     Sleep(2000);
@@ -345,6 +400,7 @@ void Single()
                         scanf("%s",arr[i-1].Faculties);
                         break;
                     default:
+                        red();
                         printf("输入非法！\n");
                         break;
                 }
@@ -352,6 +408,7 @@ void Single()
         }
         else
         {
+            red();
             printf("输入错误！\n");
             clean();
         }
@@ -365,9 +422,17 @@ void host()
         printf("请输入人数：->\n");
         if(scanf("%d",&st)==1)
         {
-            if (st <= 0)
+            if (st < 0)
             {
-                printf("输入的人数必须是正整数，请重新输入！\n");
+                red();
+                printf("输入的人数必须是不等于0的正整数，请重新输入！\n");
+                clean();
+                break;
+            }
+            else if (st == 0)
+            {
+                red();
+                printf("您的输入是非法的，学生人数必须不为0！\n");
                 clean();
                 break;
             }
@@ -385,6 +450,7 @@ void host()
         }
         else
         {
+            red();
             printf("未读取到字符！\n2秒后从新输入！\n");
             clean();
             Sleep(2000);
@@ -425,6 +491,7 @@ void revise()
             }
             else
             {
+                red();
                 printf("输入错误！\n");
                 clean();
             }
@@ -462,6 +529,7 @@ void sort()
                     //第二个参数是数组的元素个数
                     //第三个参数是每个元素的大小
                     //第四个参数是比较函数的指针地址
+                    //根据函数的指针地址返回值判断是否交换元素
                     printf("排序完毕！\n");
                     break;
                 case 2:
@@ -482,6 +550,7 @@ void sort()
                     printf("排序完毕！\n");
                     break;
                 default:
+                    red();
                     printf("输入非法！\n");
                     break;
             }
@@ -491,19 +560,24 @@ void sort()
 
 int main()
 {
+    hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+    //传参给全局变量
     int input;
     SetConsoleOutputCP(CP_UTF8);
     //设置控制台打印编码为UTF-8
+    SetConsoleTitle("学生信息管理系统");
     while (1)
     {
         meau();
+        Light_gray();
         printf("请输入：->\n");
-        if(scanf("%d",&input)!=EOF && input > 0)
+        if(scanf("%d",&input)!=EOF && input >= 0)
         {
             switch (input)
             {
                 case 0:
-                    break;
+                    goto end;
+                    //goto语句跳转
                 case 1:
                     find();
                     break;
@@ -521,19 +595,24 @@ int main()
                     sort();
                     break;
                 default:
-                    printf("输入错误！请重新输入！");
+                    red();
+                    printf("输入错误！请重新输入！\n");
                     clean();
+                    break;
             }
         }
         else
         {
-            printf("未读取到字符！\n");
+            red();
+            printf("未读取到字符！或输入非法！\n");
             Sleep(1000);
-            //延时
+            //延时1秒
             printf("请重新输入\n");
             clean();
         }
     }
+    end:
+    Light_gray();
     printf("\n按任意键退出！\n");
     free(arr);
     system("pause");
